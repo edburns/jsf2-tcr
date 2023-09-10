@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<body>
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="metadata">
+            <f:metadata>
+                <f:viewParam name="id" required="true"
+                             value="#{editTrainingEventBacking.selectedEventId}"
+                             requiredMessage="No training event selected"
+                             validatorMessage="Invalid training event id selected">
+                    <f:validateLongRange minimum="1" />
+                </f:viewParam>
+            </f:metadata>
+            <f:event type="preRenderView"
+                     listener="#{editTrainingEventBacking.loadTrainingEvent}" />
+        </ui:define>
+
+        <ui:define name="content">
+
+            <h3>Event Information</h3>
+
+            <h:panelGrid columns="4" width="100%" border="0" class="form-bkg">
+
+                <h:outputText value="Event Title" />
+
+                <h:outputText value="#{editTrainingEventBacking.selectedEvent.name}" />
+
+                <h:outputText value="Event Type" />
+
+                <h:outputText value="#{editTrainingEventBacking.selectedEvent.type}" />
+
+                <h:outputText value="Event Date" />
+
+                <h:outputText value="#{editTrainingEventBacking.selectedEvent.completionDate}">
+                                       <f:convertDateTime pattern="MM-dd-yy" />
+                </h:outputText>
+
+                <h:outputText value="Skill" />
+
+                <h:outputText value="#{editTrainingEventBacking.selectedEvent.skill}" />
+
+                <h:outputText value="Trainer" />
+
+                <h:outputText value="#{currentUser.personalTrainer.firstName} #{currentUser.personalTrainer.lastName}" />
+
+            </h:panelGrid>
+
+            <h3>My Training Sessions For This Event</h3>
+            <h:form>
+
+                <c:if test="#{! empty flash.selectedEvent}">
+                    <c:set target="#{editTrainingEventBacking}" property="selectedEvent"
+                           value="#{flash.selectedEvent}" />
+                </c:if>
+
+
+
+            <h:dataTable value="#{currentUser.getTrainingSessionsForEvent(editTrainingEventBacking.selectedEvent)}"
+                         binding="#{editTrainingEventBacking.trainingSessionData}"
+                         var="trainingSession" border="1">
+                <h:column>
+                    <f:facet name="header">Workout Date</f:facet>
+                    <h:outputText value="#{trainingSession.workoutDate}">
+                        <f:convertDateTime pattern="MM-dd-yy" />
+                    </h:outputText>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Assigned Workout</f:facet>
+                    <h:outputText value="#{trainingSession.workoutDescription}"/>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Completed?</f:facet>
+                    <h:outputText value="#{trainingSession.completed}"/>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Personal Notes</f:facet>
+                    <h:outputText value="#{trainingSession.personalNotes}"/>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Trainer Notes</f:facet>
+                    <h:outputText value="#{trainingSession.trainerNotes}"/>
+                </h:column>
+
+                <h:column>
+
+                    <f:facet name="header">Delete This Session?</f:facet>
+                    <h:selectBooleanCheckbox value="#{editTrainingEventBacking.deleteSession}"/>
+                    <f:facet name="footer">
+                        <h:commandButton value="Delete Selected Sessions"
+                                         action="allEvents?faces-redirect=true">
+                            <f:param name="id" value="#{editTrainingEventBacking.selectedEventId}" />
+                        </h:commandButton>
+                    </f:facet>
+
+                </h:column>
+
+
+            </h:dataTable>
+
+            <c:if test="#{! empty editTrainingEventBacking.selectedEventId}">
+                <c:set target="#{flash}" property="selectedEventId"
+                       value="#{editTrainingEventBacking.selectedEventId}" />
+            </c:if>
+            <c:if test="#{! empty editTrainingEventBacking.selectedEvent}">
+                <c:set target="#{flash}" property="selectedEvent"
+                       value="#{editTrainingEventBacking.selectedEvent}" />
+            </c:if>
+            <h:link outcome="addTrainingSession"
+                      value="Add training session for this event" />
+            </h:form>
+
+         </ui:define>
+
+     </ui:composition>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+<ui:insert name="metadata"/>
+<f:event type="preRenderView"
+         listener="#{loginBacking.forwardToLoginIfNotLoggedIn}" />
+<h:head>
+  <title><ui:insert name="title">Virtual Trainer</ui:insert></title>
+  <h:outputStylesheet library="style" name="vt.css" />
+</h:head>
+<h:body>
+
+<table width="100%" border="0">
+<tr><td height="89"><h1 align="center">
+  <img src="#{resource['style:logo.jpg']}" alt="Virtual Trainer Logo" />
+  JSF Virtual Trainer Application</h1>
+</td></tr>
+<c:if test="#{loginBacking.userLoggedIn}">
+  <tr><td align="right"><h:form>
+    Logged in as #{sessionScope.currentUser.userid},
+    <h:commandButton value="Logout" action="#{loginBacking.performLogout}" />
+  </h:form></td></tr>
+</c:if>
+</table>
+<!-- WARNING: Using tables for non-tabular data violates WCAG.
+   Do not copy this practice in your real apprication.  Use CSS instead.
+   A gem of a site for wcag compliance is http://worksperfectly.net/wcag/ -->
+<table border="0">
+<tr><td width="20%">
+<c:if test="#{loginBacking.userLoggedIn}">
+  <h3>Navigation Bar</h3>
+  <c:if test="#{loginBacking.currentUser.trainer}">
+    <h:link outcome="/trainer/addTrainingEvent">Add Training Event</h:link><br/>
+    <h:link outcome="/trainer/viewTrainees">Monitor Trainee Progress</h:link><br/>
+  </c:if>
+  <h:link outcome="/user/editUser">My Profile</h:link> <br />
+  <h:link outcome="/user/allEvents">All Events</h:link> <br />
+  <c:if test="#{!loginBacking.currentUser.trainer}">
+    <h:link outcome="/user/myEvents">My Events</h:link> <br />
+  </c:if>
+</c:if>
+</td>
+<td><ui:insert name="content" /></td>
+</tr>
+</table>
+
+
+</h:body>
+</html>

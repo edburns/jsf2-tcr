@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:c="http://java.sun.com/jsp/jstl/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:vt="http://java.sun.com/jsf/composite/trainer">
+<body>
+<ui:composition template="template.xhtml">
+
+<ui:define name="metadata">
+  <f:event type="preRenderView"
+           listener="#{loginBacking.forwardToMainIfLoggedIn}" />
+</ui:define>
+
+<ui:define name="content">
+  <table width="100%" border="0">
+  <tr><td width="90%">
+  <h:form>
+    <vt:loginPanel model="#{loginBacking}">
+      <f:facet name="loginOutcomeChoiceList">
+        <h:selectOneMenu binding="#{loginBacking.loginOutcomeChoiceList}" >
+          <f:selectItem itemLabel="Everyone's Events" itemValue="allEvents" />
+          <f:selectItem itemLabel="My Events" itemValue="myEvents" />
+        </h:selectOneMenu>
+      </f:facet>
+    </vt:loginPanel>
+  </h:form>
+  </td>
+  <td align="right">
+  <h:form>
+    <h:commandButton value="Register" action="register?faces-redirect=true" />
+  </h:form>
+  </td></tr></table>
+
+  <c:if test="#{! empty flash.expiredViewId}">
+      <p>To protect your security, your session has expired.  The page you were
+          last looked at was #{flash.expiredViewId}.</p>
+  </c:if>
+
+</ui:define>
+</ui:composition>
+</body>
+</html>

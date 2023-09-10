@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<body>
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="metadata">
+            <f:event type="preRenderView"
+                     listener="#{editTrainingEventBacking.forwardToMainIfNotTrainer}" />
+        </ui:define>
+
+        <ui:define name="content">
+
+            <h3>Event Information</h3>
+
+            <h:form>
+
+            <h:panelGrid columns="4" width="100%" border="0" class="form-bkg">
+
+                <h:outputText value="Event Title" />
+
+                <h:inputText value="#{event.name}" required="true"/>
+
+                <h:outputText value="Event Type" />
+
+                <h:inputText value="#{event.type}" required="true" />
+
+                <h:outputText value="Event Date" />
+
+                <h:inputText value="#{event.completionDate}" required="true">
+                                       <f:convertDateTime pattern="MM-dd-yy" />
+                </h:inputText>
+
+                <h:outputText value="Skill" />
+
+                <h:selectOneMenu label="Skill" id="slevel"
+                                 value="#{event.skill}">
+                    <f:selectItem itemLabel="Beginner" itemValue="beginner" />
+                    <f:selectItem itemLabel="Intermediate" itemValue="intermediate" />
+                    <f:selectItem itemLabel="Advanced" itemValue="advanced" />
+                </h:selectOneMenu>
+
+                <h:commandButton action="#{editTrainingEventBacking.addNewTrainingEvent}"
+                                 value="Create Event" />
+
+                <h:outputText value="&nbsp;" />
+
+                <h:outputText value="&nbsp;" />
+
+                <h:button outcome="/user/allEvents?faces-redirect=true"
+                          value="Cancel" />
+
+
+            </h:panelGrid>
+
+            </h:form>
+
+         </ui:define>
+
+     </ui:composition>
+</body>
+</html>

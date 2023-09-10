@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:cc="http://java.sun.com/jsf/composite">
+<head>
+
+<title>Not present in rendered output</title>
+
+</head>
+
+<body>
+
+<cc:interface>
+
+  <cc:attribute name="model" required="true">
+        <cc:attribute name="useridIsValid" required="true"
+                method-signature="boolean f(java.lang.String)" />
+        <cc:attribute name="passwordIsValid" required="true"
+                method-signature="boolean f(java.lang.String)" />
+        <cc:attribute name="successOutcome" required="true"
+                type="java.lang.String" />
+        <cc:attribute name="failureOutcome" type="java.lang.String" />
+  </cc:attribute>
+
+  <cc:facet name="loginOutcomeChoiceList"
+            shortDescription="This facet should contain a menu of choices for where the navigation should go after a successful login."/>
+
+</cc:interface>
+
+<cc:implementation>
+
+    <h:panelGrid columns="3">
+
+        <h:outputLabel for="#{cc.clientId}:userid" value="Userid:" />
+
+        <h:inputText binding="#{cc.userid}" required="true"
+                     requiredMessage="Userid is required" id="userid" />
+
+        <h:message for="#{cc.clientId}:userid" />
+
+
+        <h:outputLabel for="#{cc.clientId}:password" value="Password:" />
+
+        <h:inputSecret binding="#{cc.password}" required="true"
+                       requiredMessage="Password is required" id="password" />
+
+        <h:message for="#{cc.clientId}:password" />
+
+
+        <h:outputText value="On Login, Go To:"
+                      rendered="#{! empty cc.facets.loginOutcomeChoiceList}"/>
+
+        <h:panelGroup>
+            <cc:renderFacet name="loginOutcomeChoiceList"/>
+            <h:commandButton value="Login" action="#{cc.action}"
+                             actionListener="#{cc.actionListener}" />
+        </h:panelGroup>
+
+        <h:messages for="#{cc.clientId}" />
+
+    </h:panelGrid>
+
+
+</cc:implementation>
+
+</body>
+
+</html>

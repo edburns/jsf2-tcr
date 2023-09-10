@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+  <title>#{bundle.title}</title>
+</h:head>
+<h:body>
+  <h:form>
+    <h2>#{bundle.title}</h2>
+    <h4>#{bundle.subtitle}</h4>
+    <table>
+      <tr>
+        <td>#{bundle.firstName}</td>
+        <td>
+          <h:inputText label="#{bundle.firstName}"
+                       id="fname" value="#{userBean.firstName}" 
+                       required="true"/>
+          <h:message for="fname" />
+        </td>
+      </tr>
+      <tr>
+        <td>#{bundle.lastName}</td>
+        <td>
+          <h:inputText label="#{bundle.lastName}"
+                       id="lname" value="#{userBean.lastName}"
+                       required="true"/>
+          <h:message for="lname" />
+        </td>
+      </tr>
+      <tr>
+        <td>#{bundle.sexLabel}</td>
+        <td>
+          <h:selectOneRadio label="#{bundle.sexLabel}"
+                            id="sex" value="#{userBean.sex}" required="true">
+            <f:selectItem itemLabel="#{bundle.sexMale}" itemValue="male" />
+            <f:selectItem itemLabel="#{bundle.sexFemale}" itemValue="female" />
+          </h:selectOneRadio>
+          <h:message for="sex" />
+        </td>
+      </tr>
+      <tr>
+        <td>#{bundle.birthday}</td>
+        <td>
+          <h:inputText label="#{bundle.birthday}"
+                       id="dob" value="#{userBean.dob}" required="true">
+            <f:convertDateTime pattern="#{bundle.datePattern}" />
+          </h:inputText> (mm-dd-yy)
+          <h:message for="dob" />
+        </td>
+      </tr>
+      <tr>
+        <td>#{bundle.emailAddress}</td>
+        <td>
+          <h:inputText label="#{bundle.emailAddress}"
+                       id="email" value="#{userBean.email}" required="true"
+                       validator="#{userBean.validateEmail}"/>
+          <h:message for="email" />
+        </td>
+      </tr>
+      <tr>
+        <td>#{bundle.serviceLevel}</td>
+        <td>
+          <h:selectOneMenu label="#{bundle.serviceLevel}"
+                           value="#{userBean.serviceLevel}">
+            <f:selectItem itemLabel="#{bundle.serviceLevelMedium}" itemValue="medium" />
+            <f:selectItem itemLabel="#{bundle.serviceLevelBasic}" itemValue="basic" />
+            <f:selectItem itemLabel="#{bundle.serviceLevelPremium}" itemValue="premium" />
+          </h:selectOneMenu>
+        </td>
+      </tr>
+    </table>
+    <p><h:commandButton value="#{bundle.registerButton}" action="confirm" /></p>
+  </h:form>
+</h:body>
+</html>

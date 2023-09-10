@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+    version="2.0">
+
+  <managed-bean>
+    <managed-bean-name>bean</managed-bean-name>
+    <managed-bean-class>com.jsfcompref.model.SimpleBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>transaction</managed-bean-name>
+    <managed-bean-class>com.jsfcompref.model.SimpleBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+
+  <managed-bean>
+    <managed-bean-name>rates</managed-bean-name>
+    <managed-bean-class>com.jsfcompref.model.SimpleBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>product</managed-bean-name>
+    <managed-bean-class>com.jsfcompref.model.SimpleBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>prefs</managed-bean-name>
+    <managed-bean-class>java.util.HashMap</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+    <map-entries>
+      <key-class>java.lang.String</key-class>
+      <value-class>java.lang.Integer</value-class>
+      <map-entry>
+        <key>weightUnits</key>
+        <value>1</value> <!-- 1 is pounds, 0 is kilograms -->
+      </map-entry>
+    </map-entries>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>status</managed-bean-name>
+    <managed-bean-class>java.util.HashMap</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+    <map-entries>
+      <key-class>java.lang.String</key-class>
+      <value-class>boolean</value-class>
+      <map-entry>
+        <key>qualified</key>
+        <value>false</value> 
+      </map-entry>
+    </map-entries>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>user</managed-bean-name>
+    <managed-bean-class>com.jsfcompref.model.User</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+    <managed-property>
+      <property-name>preferences</property-name>
+      <value>#{prefs}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>status</property-name>
+      <value>#{status}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>currentWeight</property-name>
+      <value>200.30</value>
+    </managed-property>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>currentUser</managed-bean-name>
+    <managed-bean-class>com.jsfcompref.model.User</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+    <managed-property>
+      <property-name>status</property-name>
+      <value>#{status}</value>
+    </managed-property>
+  </managed-bean>
+
+
+  <managed-bean>
+    <managed-bean-name>user2</managed-bean-name>
+    <managed-bean-class>com.jsfcompref.model.User</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <lifecycle>
+    <phase-listener>com.jsfcompref.convert.ProgrammaticConverterAdditionPhaseListener</phase-listener>
+    <phase-listener>com.jsfcompref.validator.ProgrammaticValidatorAdditionPhaseListener</phase-listener>
+  </lifecycle>
+
+</faces-config>

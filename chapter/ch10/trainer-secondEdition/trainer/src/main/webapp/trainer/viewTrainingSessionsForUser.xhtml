@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<body>
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="metadata">
+            <f:metadata>
+                <f:viewParam name="id" required="true"
+                             value="#{viewTraineesBacking.userId}"
+                             requiredMessage="No training event selected"
+                             validatorMessage="Invalid training event id selected">
+                    <f:validateLongRange minimum="1" />
+                </f:viewParam>
+            </f:metadata>
+            <f:event type="preRenderView"
+                     listener="#{editTrainingEventBacking.forwardToMainIfNotTrainer}" />
+           <f:event type="preRenderView"
+                     listener="#{viewTraineesBacking.loadUser}" />
+
+        </ui:define>
+
+        <ui:define name="content">
+
+            <h3>Events and Training Sessions for #{viewTraineesBacking.selectedUser.firstName}
+            #{viewTraineesBacking.selectedUser.lastName}</h3>
+
+            <h:form>
+
+                <c:if test="#{! empty flash.selectedUser}">
+                    <c:set target="#{viewTraineesBacking}" property="selectedUser"
+                           value="#{flash.selectedUser}" />
+                </c:if>
+
+                <h:dataTable value="#{viewTraineesBacking.selectedUser.myEvents}"
+                             var="event"
+                             rendered="#{viewTraineesBacking.selectedUser.myEvents.rowCount > 0}"
+                             border="0">
+
+                    <h:column>
+
+                        <h2>#{event.name}</h2>
+
+                        <h:dataTable value="#{viewTraineesBacking.selectedUser.getTrainingSessionsForEvent(event)}"
+                                     binding="#{viewTraineesBacking.trainingSessions}"
+                                     var="trainingSession"
+                                     border="0">
+                            <h:column>
+
+                                <h:panelGrid columns="5" border="1">
+
+                                    <h:outputText value="Workout Date (mm-dd-yy)" />
+
+                                    <h:outputText value="Assigned Workout" />
+
+                                    <h:outputText value="Completed?" />
+
+                                    <h:outputText value="Personal Notes" />
+
+                                    <h:outputText value="Trainer Notes" />
+
+                                    <h:outputText value="#{trainingSession.workoutDate}">
+                                        <f:convertDateTime pattern="MM-dd-yy" />
+                                    </h:outputText>
+
+                                    <h:outputText value="#{trainingSession.workoutDescription}"/>
+
+                                    <h:selectBooleanCheckbox disabled="true" value="#{trainingSession.completed}"/>
+
+                                    <h:outputText value="#{trainingSession.personalNotes}"/>
+
+                                    <h:inputText value="#{trainingSession.trainerNotes}"/>
+
+                                </h:panelGrid>
+
+                            </h:column>
+
+                        </h:dataTable>
+
+                    </h:column>
+
+                </h:dataTable>
+
+
+
+                <h:commandButton action="/user/allEvents?faces-redirect=true"
+                                 value="Update"/>
+
+                <c:if test="#{! empty viewTraineesBacking.selectedUser}">
+                    <c:set target="#{flash}" property="selectedUser"
+                           value="#{viewTraineesBacking.selectedUser}" />
+                </c:if>
+
+
+            </h:form>
+
+         </ui:define>
+
+     </ui:composition>
+</body>
+</html>

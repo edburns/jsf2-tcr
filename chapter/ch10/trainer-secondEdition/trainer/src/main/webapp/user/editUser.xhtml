@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<body>
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="content">
+
+            <h3>Edit User Information</h3>
+
+<h:form prependId="false">
+    <h:panelGrid columns="3">
+
+        <h:outputLabel for="fname" value="First Name:" />
+        <h:inputText label="First Name"
+                     id="fname" value="#{currentUser.firstName}"
+                     required="true"/>
+        <h:message for="fname" />
+
+        <h:outputLabel for="lname" value="Last Name:" />
+        <h:inputText label="Last Name"
+                     id="lname" value="#{currentUser.lastName}"
+                     required="true"/>
+        <h:message for="lname" />
+
+        <h:outputLabel for="sex" value="Sex:" />
+        <h:selectOneRadio label="Sex"
+                          id="sex" value="#{currentUser.sex}" required="true">
+          <f:selectItem itemLabel="Male" itemValue="male" />
+          <f:selectItem itemLabel="Female" itemValue="female" />
+        </h:selectOneRadio>
+        <h:message for="sex" />
+
+        <h:outputLabel for="dob" value="Date of Birth:" />
+        <h:panelGroup>
+            <h:inputText label="Date of Birth"
+                     id="dob" value="#{currentUser.dob}" required="true">
+                <f:convertDateTime pattern="MM-dd-yy" />
+            </h:inputText> (mm-dd-yy)
+        </h:panelGroup>
+        <h:message for="dob" />
+
+        <h:outputLabel for="email" value="Email Address:" />
+        <h:inputText label="Email Address"
+                     id="email" value="#{currentUser.email}" required="true" />
+        <h:message for="email" />
+
+        <h:outputLabel for="slevel" value="Service Level:" />
+        <h:selectOneMenu label="Service Level" id="slevel"
+                         value="#{currentUser.serviceLevel}">
+          <f:selectItem itemLabel="Medium" itemValue="medium" />
+          <f:selectItem itemLabel="Basic" itemValue="basic" />
+          <f:selectItem itemLabel="Premium" itemValue="premium" />
+        </h:selectOneMenu>
+        <h:message for="slevel" />
+
+        <h:outputLabel for="userid" value="Userid:" />
+        <h:outputText required="true" id="userid" value="#{currentUser.userid}" />
+        <h:message for="userid" />
+
+        <h:outputLabel for="password" value="Password:" />
+        <h:inputSecret required="true" id="password"
+                       validator="#{registerBacking.validatePassword1}"
+                       value="#{requestScope.password1}" />
+        <h:message for="password" />
+
+        <h:outputLabel for="password2" value="Retype Password:" />
+        <h:inputSecret required="true" id="password2" value="#{requestScope.password2}"
+                       validator="#{registerBacking.validatePassword2}" />
+        <h:message for="password2" />
+
+        <h:outputLabel for="trainer" value="Select Trainer" />
+        <h:selectOneMenu label="Service Level" id="trainer"
+                         value="#{currentUser.personalTrainerId}">
+            <f:selectItems value="#{editUserBacking.availableTrainers}"
+                           var="trainer"
+                           itemLabel="#{trainer.firstName} #{trainer.lastName}"
+                           itemValue="#{trainer.id}" />
+
+        </h:selectOneMenu>
+        <h:message for="slevel" />
+
+
+
+    </h:panelGrid>
+
+    <p><h:commandButton value="Update"
+                        actionListener="#{editUserBacking.updateUser}"
+                     action="myEvents?faces-redirect=true" /></p>
+</h:form>
+
+         </ui:define>
+
+     </ui:composition>
+</body>
+</html>

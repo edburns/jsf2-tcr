@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<body>
+
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="content">
+
+            <h3>All Upcoming Events</h3>
+
+            <h:form>
+
+                <h:dataTable value="#{eventRegistry.events}" var="event"
+                             binding="#{eventTableBacking.events}"
+                             rendered="#{eventRegistry.events.rowCount > 0}"
+                             border="1">
+                    <h:column>
+                        <f:facet name="header">Event Name</f:facet>
+                        #{event.name}
+                    </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Event Date</f:facet>
+                            <h:outputText value="#{event.completionDate}">
+                                <f:convertDateTime timeStyle="short" />
+                            </h:outputText>
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Skill Level</f:facet>
+                            #{event.skill}
+                        </h:column>
+
+                        <h:column>
+
+                            <c:if test="#{currentUser.trainer}">
+                                <f:facet name="header">Take action</f:facet>
+                                <h:link outcome="/trainer/editTrainingEvent">
+                                    <f:param name="id" value="#{event.id}"/>
+                                    Edit
+                                </h:link>
+                            </c:if>
+
+                            <c:if test="#{!currentUser.trainer}">
+                            <f:facet name="header">Training<br />
+                                for this event?</f:facet>
+                            <h:selectBooleanCheckbox value="#{eventTableBacking.subscribedToEvent}"/>
+                            <f:facet name="footer">
+                                <h:commandButton value="Update Event Subscriptions"
+                                                 action="myEvents?faces-redirect=true" />
+                            </f:facet>
+                            </c:if>
+                            
+                        </h:column>
+
+                        <c:if test="#{currentUser.trainer}">
+
+                            <h:column>
+
+                                <f:facet name="header">Delete This Event?</f:facet>
+                                <h:selectBooleanCheckbox value="#{eventTableBacking.deleteEvent}"/>
+                                <f:facet name="footer">
+                                    <h:commandButton value="Delete Selected Events"
+                                                     action="allEvents?faces-redirect=true" />
+                                </f:facet>
+
+                            </h:column>
+
+                        </c:if>
+
+
+                 </h:dataTable>
+
+             </h:form>
+
+            <p><h:messages/></p>
+      
+         </ui:define>
+
+     </ui:composition>
+</body>
+</html>

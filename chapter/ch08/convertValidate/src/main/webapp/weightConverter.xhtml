@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+  <h:head>
+    <title>WeightConverter example</title>
+  </h:head>
+
+  <h:body>
+    <h1>WeightConverter example</h1>
+
+<h:form id="form">
+
+<p>Current weight <h:inputText value="#{user.currentWeight}">
+                    <f:converter converterId="com.jsfcompref.Weight" />
+                  </h:inputText>
+</p>
+
+
+<p><h:commandButton value="Submit" /></p>
+
+<p>
+<h:messages />
+</p>
+
+
+
+</h:form>
+
+  </h:body>
+</html>
+

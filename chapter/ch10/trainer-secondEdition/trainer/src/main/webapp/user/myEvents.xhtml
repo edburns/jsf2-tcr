@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<body>
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="metadata">
+            <f:metadata>
+                <f:viewParam name="id"/>
+            </f:metadata>
+        </ui:define>
+
+        <ui:define name="content">
+
+            <h3>My Upcoming Events</h3>
+
+            <h:form>
+
+                <h:dataTable value="#{currentUser.myEvents}" var="event"
+                             binding="#{eventTableBacking.events}"
+                             rendered="#{currentUser.myEvents.rowCount > 0}"
+                             border="1">
+                    <h:column>
+                        <f:facet name="header">Event Name</f:facet>
+                        #{event.name}
+                    </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Event Date</f:facet>
+                            #{event.completionDate}
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Skill Level</f:facet>
+                            #{event.skill}
+                        </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Take action</f:facet>
+                        <h:link outcome="editTrainingEvent">
+                            <f:param name="id" value="#{event.id}"/>
+                            Edit
+                        </h:link>
+                    </h:column>
+
+                 </h:dataTable>
+
+             </h:form>
+
+            <p><h:messages/></p>
+      
+         </ui:define>
+
+     </ui:composition>
+</body>
+</html>
